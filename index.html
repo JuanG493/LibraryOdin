@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="library.js"></script>
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="main">
+        <form class="library" action="/" method="get">
+            <h1 class="title">LIBRARY</h1>
+            <span id="subtitle">Add new books</span>
+            <label for="title">Title</label>
+            <input class="field" type="text" required id="title">
+            <label for="Author">Author</label>
+            <input class="field" type="text" required id="Author">
+            <label for="pages">Pages</label>
+            <input class='field' type="number" required id="pages">
+            <span id="quest">Have you read this book?</span>
+            <div>
+                <label for="no">No</label>
+                <input type="radio" id="no" name="read" value="no" checked>
+                <label for="yes">Yes</label>
+                <input type="radio" id="yes" name="read" value="yes">
+
+            </div>
+            <div class="buttons">
+                <button type="submit">Submit</button>
+                <button class="deleteAll">Delete all</button>
+            </div>
+        </form>
+        <div class="yourbooks">
+            <h2>Your Books</h2>
+            <div class="framebooks"></div>
+        </div>
+    </div>
+</body>
+
+</html>

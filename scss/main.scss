@@ -1,0 +1,75 @@
+@import 'config';
+@import 'responsive';
+
+button{
+    padding: 2%;
+}
+
+.main{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.library{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid $primary-color ;
+    padding: 2%;
+     #subtitle{
+        text-decoration: underline;
+    }
+    label{
+        font-weight: bold;
+    }
+    #quest{
+        padding-top: 4%;
+        padding-bottom: 4%;
+    }
+    .buttons{
+        padding: 5%;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+}
+
+.yourbooks{
+    margin-left: 2%;
+    border: 2px solid $primary-color;
+    width: 35em;
+    display: flex;
+    flex-direction: column;
+    h2{
+        text-align: center;
+    }
+    
+    .framebooks{
+        display: grid;
+        grid-auto-rows: minmax(1fr, auto);
+        div{
+            span{
+                border: 2px solid black;
+            }
+            margin: 0.5%;
+            
+            display: grid;
+            grid-template-columns: 10fr 1fr 1fr;
+            button{
+                align-self: center;
+                margin: 2px;
+            }
+        } 
+    }
+    .read{
+        span{
+            background-color: rgba(0, 128, 0, 0.104);
+        }
+    }
+
+}
