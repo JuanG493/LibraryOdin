@@ -1,69 +1,96 @@
+class library {
+   contenOfNewBooks = document.querySelector('.framebooks');
 
-
-let mylibrary = [];
-let shelf = document.querySelector('.framebooks');
-
-let btnDelAll = document.querySelector('.deleteAll');
-btnDelAll.addEventListener('click', () => shelf.innerHTML = '')
-
-
-function Book(title, author, pages, read) {
-   this.title = title
-   this.author = author
-   this.pages = pages
-   this.read = read
-   this.info = function () {
-      return (`${title} by ${author}, ${pages}, ${read} read yet`);
+   constructor(title, author, pages, read, id) {
+      this.title = title
+      this.author = author
+      this.pages = pages
+      this.read = read
+      this.id = id
+   }
+   infoBook() {
+      return `title: ${this.title}, author: ${this.author}, number of pages: ${this.pages}`
    }
 
-}
-let library = document.querySelector('form');
-library.addEventListener('submit', e => {
-   e.preventDefault();
-   let eleVal = document.querySelectorAll('.field');
-   let radBut = document.querySelector('input[name="read"]:checked').value;
-   let partialList = [];
-   eleVal.forEach((item) => {
-      partialList.push(item.value)
-   });
-   partialList.push(radBut);
-   mylibrary.push(new Book(...partialList));
-   library.reset();
-   addingBooks(radBut);
-})
+   divBook() {
 
-function addingBooks(stt) {
-   let indexItem = mylibrary[mylibrary.length - 1]
-   let newBook = document.createElement('div');
-   newBook.setAttribute('id', `${mylibrary.length - 1}`);
-   if(stt === 'yes'){
-      newBook.setAttribute('class', 'read')
+      let newBook = document.createElement('div');
+      newBook.setAttribute('id', `${this.id}`);
+
+      if (this.read == 'yes')
+         newBook.setAttribute('class', 'read')
+
+      let contenBook = document.createElement('span');
+      contenBook.textContent = this.infoBook()
+      newBook.appendChild(contenBook);
+
+      let btnStatus = document.createElement('button');
+      btnStatus.innerText = 'status';
+
+      btnStatus.setAttribute('onclick', `flow.changeStatusRoute("${this.id}")`);
+      newBook.appendChild(btnStatus);
+
+      let btnDel = document.createElement('button');
+      btnDel.innerText = 'Delete';
+      btnDel.setAttribute('onclick', `flow.delDivRoute(${this.id})`)
+      newBook.appendChild(btnDel);
+
+      this.contenOfNewBooks.appendChild(newBook);
+
    }
 
-   let contenBook = document.createElement('span');
-   contenBook.textContent = `Title: ${indexItem.title}, Author: ${indexItem.author}, Pages: ${indexItem.pages}`;
-   newBook.appendChild(contenBook);
-   
-   let btnStatus = document.createElement('button');
-   btnStatus.innerText = 'status';
-   btnStatus.setAttribute('onclick', `changeStatus(${mylibrary.length-1})`);
-   newBook.appendChild(btnStatus);
-   let btnDel = document.createElement('button');
-   btnDel.innerText = 'Delete';
-   btnDel.setAttribute('onclick', `delOneBook(${mylibrary.length - 1})`)
-   newBook.appendChild(btnDel);
-   shelf.appendChild(newBook);
+   delBook(id) {
+      let target = document.querySelector(`#${id}`);
+      this.contenOfNewBooks.removeChild(target)
+   }
 }
 
-function delOneBook(num) {
-   let elemntDel = document.querySelector(`div[id="${num}"]`);
-   shelf.removeChild(elemntDel);
-}
 
-function changeStatus (num){
-   let target = document.getElementById(`${num}`);
-   target.classList.toggle('read');
-}
+let flow = (() => {
+   let ids = 0
+   let formElm = document.querySelector('form');
+   let mylibraryOfBooks = {}
+
+   formElm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let eleVal = document.querySelectorAll('.field');
+      let radBut = document.querySelector('input[name="read"]:checked').value;
+
+      const values = [...eleVal].map(itm => itm.value);
+      let formatId = `book${ids}`
+      values.push(radBut, formatId)
+
+
+      mylibraryOfBooks[formatId] = new library(...values);
+      mylibraryOfBooks[formatId].divBook();
+
+      formElm.reset();
+      ids += 1;
+
+
+   })
+
+   let btnDelAll = document.querySelector('.deleteAll');
+   btnDelAll.addEventListener('click', () => {
+
+      for (const key in flow.mylibraryOfBooks) {
+            delete flow.mylibraryOfBooks[key];
+      }
+      document.querySelector('.framebooks').innerHTML = ' '
+   })
+
+   function delDivRoute(propertis) {
+      mylibraryOfBooks[propertis.id].delBook(propertis.id);
+      delete mylibraryOfBooks[propertis.id];
+   }
+
+   function changeStatusRoute(propertis) {
+      let target = document.querySelector(`#${propertis}`)
+      target.classList.toggle('read');
+   }
+   return { mylibraryOfBooks, delDivRoute, changeStatusRoute  }
+
+})()
 
 
 
